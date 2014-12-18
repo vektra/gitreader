@@ -49,11 +49,11 @@ type Pack struct {
 	data     mmap.MMap
 }
 
-func (p *Pack) Close() {
+func (p *Pack) Close() error {
 	p.index.Unmap()
 	p.indexFile.Close()
 	p.data.Unmap()
-	p.dataFile.Close()
+	return p.dataFile.Close()
 }
 
 var ErrBadIndex = errors.New("bad index format")

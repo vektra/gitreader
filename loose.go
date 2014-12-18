@@ -23,3 +23,7 @@ func (l *LooseObject) LoadObject(id string) (*Object, error) {
 
 	return ParseObject(f)
 }
+
+func (l *LooseObject) Close() error {
+	return nil
+}

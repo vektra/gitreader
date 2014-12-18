@@ -10,6 +10,7 @@ import (
 
 type Loader interface {
 	LoadObject(id string) (*Object, error)
+	Close() error
 }
 
 type Repo struct {
@@ -20,6 +21,9 @@ type Repo struct {
 var ErrInvalidRepo = errors.New("invalid repo")
 
 // Open up a repository. Can be either normal or bare.
+// Be sure to issue Close() on a repo when you're finished
+// with it because that makes sure that any pack files
+// used by the repo are properly unmapped.
 func OpenRepo(path string) (*Repo, error) {
 	tries := []string{filepath.Join(path, ".git"), path}
 
@@ -48,6 +52,14 @@ func OpenRepo(path string) (*Repo, error) {
 	}
 
 	return repo, nil
+}
+
+func (r *Repo) Close() error {
+	for _, loader := range r.Loaders {
+		loader.Close()
+	}
+
+	return nil
 }
 
 func (r *Repo) initLoaders() error {

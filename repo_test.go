@@ -12,6 +12,8 @@ func TestRepoResolveRef(t *testing.T) {
 	repo, err := OpenRepo("fixtures/proj")
 	require.NoError(t, err)
 
+	defer repo.Close()
+
 	id, err := repo.ResolveRef("master")
 	require.NoError(t, err)
 
@@ -21,6 +23,8 @@ func TestRepoResolveRef(t *testing.T) {
 func TestRepoOpenRepoBare(t *testing.T) {
 	repo, err := OpenRepo("fixtures/proj/.git")
 	require.NoError(t, err)
+
+	defer repo.Close()
 
 	id, err := repo.ResolveRef("master")
 	require.NoError(t, err)
@@ -32,6 +36,8 @@ func TestRepoResolveRefReadsTags(t *testing.T) {
 	repo, err := OpenRepo("fixtures/proj")
 	require.NoError(t, err)
 
+	defer repo.Close()
+
 	id, err := repo.ResolveRef("before")
 	require.NoError(t, err)
 
@@ -42,6 +48,8 @@ func TestRepoResolveRefHEAD(t *testing.T) {
 	repo, err := OpenRepo("fixtures/proj")
 	require.NoError(t, err)
 
+	defer repo.Close()
+
 	id, err := repo.ResolveRef("HEAD")
 	require.NoError(t, err)
 
@@ -51,6 +59,8 @@ func TestRepoResolveRefHEAD(t *testing.T) {
 func TestRepoLoadObject(t *testing.T) {
 	repo, err := OpenRepo("fixtures/proj")
 	require.NoError(t, err)
+
+	defer repo.Close()
 
 	obj, err := repo.LoadObject("467c21715563cbf5bf52ae79616e02914b89e9f1")
 	require.NoError(t, err)
@@ -70,6 +80,8 @@ func TestRepoResolve(t *testing.T) {
 	repo, err := OpenRepo("fixtures/proj")
 	require.NoError(t, err)
 
+	defer repo.Close()
+
 	id, err := repo.Resolve("HEAD", "Procfile")
 	require.NoError(t, err)
 
@@ -80,6 +92,8 @@ func TestRepoResolveInSubtree(t *testing.T) {
 	repo, err := OpenRepo("fixtures/proj")
 	require.NoError(t, err)
 
+	defer repo.Close()
+
 	id, err := repo.Resolve("HEAD", "app/config.rb")
 	require.NoError(t, err)
 
@@ -89,6 +103,8 @@ func TestRepoResolveInSubtree(t *testing.T) {
 func TestRepoCatFile(t *testing.T) {
 	repo, err := OpenRepo("fixtures/proj")
 	require.NoError(t, err)
+
+	defer repo.Close()
 
 	blob, err := repo.CatFile("HEAD", "Procfile")
 	require.NoError(t, err)
