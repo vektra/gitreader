@@ -20,3 +20,30 @@ So when you're in golang and need to read some data out a git repository, reach 
 **gitreader**, you'll be happy with yourself.
 
  - Vektra Devs
+
+ ## Usage
+
+```go
+import "fmt"
+import "gitreader"
+
+repo, err := gitreader.OpenRepo("/path/to/repo")
+if err != nil {
+  panic(err)
+}
+
+blob, err := repo.CatFile("HEAD", "path/to/file")
+if err != nil {
+  panic(err)
+}
+
+// WARNING: use Blob as an io.Reader instead if you can!
+bytes, err := blob.Bytes()
+if err != nil {
+  panic(err)
+}
+
+fmt.Printf("%s", bytes)
+
+repo.Close()
+```
