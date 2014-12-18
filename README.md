@@ -21,7 +21,7 @@ So when you're in golang and need to read some data out a git repository, reach 
 
  - Vektra Devs
 
- ## Usage
+## Usage
 
 ```go
 import "fmt"
