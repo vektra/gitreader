@@ -59,7 +59,7 @@ func TestPackLoadDeltaObject(t *testing.T) {
 	n, err := io.Copy(sha, blob)
 	require.NoError(t, err)
 
-	assert.Equal(t, object.Size, n)
+	assert.Equal(t, int(object.Size), n)
 
 	sum := sha.Sum(nil)
 

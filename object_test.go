@@ -23,7 +23,7 @@ func TestParseCommitObject(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, "commit", obj.Type)
-	assert.Equal(t, 165, obj.Size)
+	assert.Equal(t, 165, int(obj.Size))
 
 	commit, err := obj.Commit()
 	require.NoError(t, err)
@@ -48,7 +48,7 @@ func TestParseTreeObject(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, "tree", obj.Type)
-	assert.Equal(t, 36, obj.Size)
+	assert.Equal(t, 36, int(obj.Size))
 
 	tree, err := obj.Tree()
 	require.NoError(t, err)
@@ -74,7 +74,7 @@ func TestParseBlobObject(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, "blob", obj.Type)
-	assert.Equal(t, 10, obj.Size)
+	assert.Equal(t, 10, int(obj.Size))
 
 	rdr, err := obj.Blob()
 	require.NoError(t, err)
