@@ -17,14 +17,29 @@ type Repo struct {
 	Loaders []Loader
 }
 
-func OpenRepo(path string) (*Repo, error) {
-	dir := filepath.Join(path, ".git", "objects")
+var ErrInvalidRepo = errors.New("invalid repo")
 
-	if _, err := os.Stat(dir); err != nil {
-		return nil, err
+func OpenRepo(path string) (*Repo, error) {
+	tries := []string{filepath.Join(path, ".git"), path}
+
+	var repoPath string
+
+	for _, dir := range tries {
+		testDir := filepath.Join(dir, "objects")
+
+		if _, err := os.Stat(testDir); err != nil {
+			continue
+		}
+
+		repoPath = dir
+		break
 	}
 
-	repo := &Repo{filepath.Join(path, ".git"), nil}
+	if repoPath == "" {
+		return nil, ErrInvalidRepo
+	}
+
+	repo := &Repo{repoPath, nil}
 
 	err := repo.initLoaders()
 	if err != nil {

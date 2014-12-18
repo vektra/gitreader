@@ -18,6 +18,16 @@ func TestRepoResolveRef(t *testing.T) {
 	assert.Equal(t, "bdae0e92f4a7ca0ec05b6c2decab9dc18361750b", id)
 }
 
+func TestRepoOpenRepoBare(t *testing.T) {
+	repo, err := OpenRepo("fixtures/proj/.git")
+	require.NoError(t, err)
+
+	id, err := repo.ResolveRef("master")
+	require.NoError(t, err)
+
+	assert.Equal(t, "bdae0e92f4a7ca0ec05b6c2decab9dc18361750b", id)
+}
+
 func TestRepoResolveRefReadsTags(t *testing.T) {
 	repo, err := OpenRepo("fixtures/proj")
 	require.NoError(t, err)
