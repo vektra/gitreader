@@ -22,10 +22,12 @@ type Object struct {
 	body  *bufio.Reader
 }
 
+// Cleanup the object's resources
 func (o *Object) Close() error {
 	return o.input.Close()
 }
 
+// Read the data and construct a new Object
 func ParseObject(input io.Reader) (*Object, error) {
 	plain, err := zlib.NewReader(input)
 	if err != nil {
@@ -80,6 +82,7 @@ type Commit struct {
 	Parent, Tree, Author, Committer, Message string
 }
 
+// Return the Object as a Commit
 func (o *Object) Commit() (*Commit, error) {
 	com := &Commit{}
 
@@ -125,6 +128,7 @@ type Entry struct {
 	Permissions, Name, Id string
 }
 
+// Return the Object as a Tree
 func (o *Object) Tree() (*Tree, error) {
 	tree := &Tree{
 		Entries: make(map[string]*Entry),
@@ -166,6 +170,8 @@ type Blob struct {
 	all []byte
 }
 
+// Read all the data in the blob and return it.
+// WARNING: use Blob as an io.Reader instead if you can!
 func (b *Blob) Bytes() ([]byte, error) {
 	if b.all != nil {
 		return b.all, nil
@@ -181,6 +187,7 @@ func (b *Blob) Bytes() ([]byte, error) {
 	return all, nil
 }
 
+// Return the Object as a Blob
 func (o *Object) Blob() (*Blob, error) {
 	return &Blob{o.body, nil}, nil
 }

@@ -16,6 +16,7 @@ import (
 	"github.com/edsrzf/mmap-go"
 )
 
+// Load the pack data from the given path
 func LoadPack(path string) (*Pack, error) {
 	pack := &Pack{
 		idxPath:  path + ".idx",
@@ -37,6 +38,7 @@ func LoadPack(path string) (*Pack, error) {
 
 var order = binary.BigEndian
 
+// Implements LoadObject for a pack file
 type Pack struct {
 	idxPath   string
 	indexFile *os.File

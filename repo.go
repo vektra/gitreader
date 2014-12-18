@@ -19,6 +19,7 @@ type Repo struct {
 
 var ErrInvalidRepo = errors.New("invalid repo")
 
+// Open up a repository. Can be either normal or bare.
 func OpenRepo(path string) (*Repo, error) {
 	tries := []string{filepath.Join(path, ".git"), path}
 
@@ -78,6 +79,7 @@ var refDirs = []string{"heads", "tags"}
 
 var ErrUnknownRef = errors.New("unknown ref")
 
+// Given a reference, return the object id for the commit
 func (r *Repo) ResolveRef(ref string) (string, error) {
 	if ref == "HEAD" {
 		return r.resolveIndirect(filepath.Join(r.Base, "HEAD"))
@@ -118,6 +120,7 @@ func (r *Repo) resolveIndirect(path string) (string, error) {
 	return id, nil
 }
 
+// Lookup an object id
 func (r *Repo) LoadObject(id string) (*Object, error) {
 	for _, loader := range r.Loaders {
 		obj, err := loader.LoadObject(id)
@@ -139,6 +142,7 @@ var ErrNotCommit = errors.New("ref is not a commit")
 var ErrNotTree = errors.New("object is not a tree")
 var ErrNotBlob = errors.New("object is not a blob")
 
+// Given a ref and a path, return an object id
 func (r *Repo) Resolve(ref, path string) (string, error) {
 	refId, err := r.ResolveRef(ref)
 	if err != nil {
@@ -206,6 +210,7 @@ func (r *Repo) Resolve(ref, path string) (string, error) {
 	return nextId.Id, nil
 }
 
+// Given a ref and a path to a blob, return the blob data
 func (r *Repo) CatFile(ref, path string) (*Blob, error) {
 	id, err := r.Resolve(ref, path)
 	if err != nil {

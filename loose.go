@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 )
 
+// Implements reading objects out of the .git/objects directory
 type LooseObject struct {
 	Base string
 }
