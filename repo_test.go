@@ -20,8 +20,8 @@ func TestRepoResolveRef(t *testing.T) {
 	assert.Equal(t, "bdae0e92f4a7ca0ec05b6c2decab9dc18361750b", id)
 }
 
-func TestRepoOpenRepoBare(t *testing.T) {
-	repo, err := OpenRepo("fixtures/proj/.git")
+func TestBareRepoResolveRef(t *testing.T) {
+	repo, err := OpenRepo("fixtures/proj.git")
 	require.NoError(t, err)
 
 	defer repo.Close()
