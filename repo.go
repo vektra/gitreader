@@ -114,6 +114,14 @@ func (r *Repo) ResolveRef(ref string) (string, error) {
 		return strings.TrimSpace(string(data)), nil
 	}
 
+	// this might be a raw ref. See if there is a commit there and if so
+	// accept it as is.
+
+	obj, err := r.LoadObject(ref)
+	if err == nil && obj.Type == "commit" {
+		return ref, nil
+	}
+
 	return "", ErrUnknownRef
 }
 

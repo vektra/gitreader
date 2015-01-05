@@ -26,7 +26,7 @@ func TestBareRepoResolveRef(t *testing.T) {
 
 	defer repo.Close()
 
-	id, err := repo.ResolveRef("master")
+	id, err := repo.ResolveRef("bdae0e92f4a7ca0ec05b6c2decab9dc18361750b")
 	require.NoError(t, err)
 
 	assert.Equal(t, "bdae0e92f4a7ca0ec05b6c2decab9dc18361750b", id)
