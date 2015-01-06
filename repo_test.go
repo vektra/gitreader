@@ -8,19 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestRepoResolveRef(t *testing.T) {
-	repo, err := OpenRepo("fixtures/proj")
-	require.NoError(t, err)
-
-	defer repo.Close()
-
-	id, err := repo.ResolveRef("master")
-	require.NoError(t, err)
-
-	assert.Equal(t, "bdae0e92f4a7ca0ec05b6c2decab9dc18361750b", id)
-}
-
-func TestBareRepoResolveRef(t *testing.T) {
+func TestRepoResolveRefSHA(t *testing.T) {
 	repo, err := OpenRepo("fixtures/proj.git")
 	require.NoError(t, err)
 
@@ -30,18 +18,6 @@ func TestBareRepoResolveRef(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, "bdae0e92f4a7ca0ec05b6c2decab9dc18361750b", id)
-}
-
-func TestRepoResolveRefReadsTags(t *testing.T) {
-	repo, err := OpenRepo("fixtures/proj")
-	require.NoError(t, err)
-
-	defer repo.Close()
-
-	id, err := repo.ResolveRef("before")
-	require.NoError(t, err)
-
-	assert.Equal(t, "6fe9de222caf76a787e0df553264d0d9f3bc4ead", id)
 }
 
 func TestRepoResolveRefHEAD(t *testing.T) {
@@ -54,6 +30,72 @@ func TestRepoResolveRefHEAD(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, "bdae0e92f4a7ca0ec05b6c2decab9dc18361750b", id)
+}
+
+func TestRepoResolveRefBranch(t *testing.T) {
+	repo, err := OpenRepo("fixtures/proj")
+	require.NoError(t, err)
+
+	defer repo.Close()
+
+	id, err := repo.ResolveRef("master")
+	require.NoError(t, err)
+
+	assert.Equal(t, "bdae0e92f4a7ca0ec05b6c2decab9dc18361750b", id)
+}
+
+func TestRepoResolveRefTag(t *testing.T) {
+	repo, err := OpenRepo("fixtures/proj")
+	require.NoError(t, err)
+
+	defer repo.Close()
+
+	id, err := repo.ResolveRef("before")
+	require.NoError(t, err)
+
+	assert.Equal(t, "6fe9de222caf76a787e0df553264d0d9f3bc4ead", id)
+}
+
+func TestBareRepoResolveRefSHA(t *testing.T) {
+	repo, err := OpenRepo("fixtures/proj.git")
+	require.NoError(t, err)
+
+	defer repo.Close()
+
+	id, err := repo.ResolveRef("bdae0e92f4a7ca0ec05b6c2decab9dc18361750b")
+	require.NoError(t, err)
+
+	assert.Equal(t, "bdae0e92f4a7ca0ec05b6c2decab9dc18361750b", id)
+}
+
+func TestBareRepoResolveRefHEAD(t *testing.T) {
+	repo, err := OpenRepo("fixtures/proj.git")
+	require.NoError(t, err)
+
+	defer repo.Close()
+
+	_, err = repo.ResolveRef("HEAD")
+	require.Error(t, err)
+}
+
+func TestBareRepoResolveRefBranch(t *testing.T) {
+	repo, err := OpenRepo("fixtures/proj.git")
+	require.NoError(t, err)
+
+	defer repo.Close()
+
+	_, err = repo.ResolveRef("master")
+	require.Error(t, err)
+}
+
+func TestBareRepoResolveRefTag(t *testing.T) {
+	repo, err := OpenRepo("fixtures/proj.git")
+	require.NoError(t, err)
+
+	defer repo.Close()
+
+	_, err = repo.ResolveRef("before")
+	require.Error(t, err)
 }
 
 func TestRepoLoadObject(t *testing.T) {
